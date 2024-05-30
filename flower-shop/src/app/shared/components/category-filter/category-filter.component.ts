@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActiveParamsType } from 'src/app/types/active-params.type ';
 import { CategoryWithTypeType } from 'src/app/types/categoryWithType.type ';
+import { ActiveParamsUtil } from '../../utils/active-params.util';
 
 @Component({
   selector: 'category-filter', 
@@ -37,38 +38,8 @@ export class CategoryFilterComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe( params => {
-      const activeParams: ActiveParamsType = {types: []}; 
-      
-      if (params.hasOwnProperty('types')) {
-        // 13:22 Модуль №13. УРОК №5
-        activeParams.types = Array.isArray(params['types']) ? params['types'] : [params['types']]; 
-      }
 
-      if (params.hasOwnProperty('heightTo')) {
-        activeParams.heightTo = params['heightTo']; 
-      }
-
-      if (params.hasOwnProperty('heightFrom')) {
-        activeParams.heightFrom = params['heightFrom']; 
-      }
-
-      if (params.hasOwnProperty('diameterTo')) {
-        activeParams.diameterTo = params['diameterTo']; 
-      }
-
-      if (params.hasOwnProperty('diameterFrom')) {
-        activeParams.diameterFrom = params['diameterFrom']; 
-      }
-
-      if (params.hasOwnProperty('sort')) {
-        activeParams.sort = params['sort']; 
-      }
-
-      if (params.hasOwnProperty('page')) {
-        activeParams.page = +params['page']; 
-      }
-
-      this.activeParams = activeParams;
+      this.activeParams = ActiveParamsUtil.processParams(params);
     
       // при обновлении страницы чтобы не пропадали выбранные позиции
       if (this.type) {
@@ -83,8 +54,11 @@ export class CategoryFilterComponent implements OnInit {
         }
         // для категорий
       } else {
-        this.activeParams.types = params['types'];
+        if (params['types']) {
+          this.activeParams.types = Array.isArray(params['types']) ? params['types'] : [params['types']]; 
         // + добавить в html [checked]="activeParams.types.includes(type.url)" 26:45
+        }
+        
  
         // 29:17 Модуль №13. УРОК №5
         if (this.categoryWithTypes && this.categoryWithTypes.types 
@@ -117,6 +91,10 @@ export class CategoryFilterComponent implements OnInit {
       this.activeParams.types = [url];
     }
 
+
+    this.activeParams.page = 1;
+
+
     this.router.navigate(['/catalog'], {
       queryParams: this.activeParams,
     });
@@ -131,6 +109,7 @@ export class CategoryFilterComponent implements OnInit {
     }
     }
    
+    this.activeParams.page = 1;
     this.router.navigate(['/catalog'], {
       queryParams: this.activeParams,
     });

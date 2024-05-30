@@ -34,7 +34,8 @@
             <nav class="footer-items">
                 <ul>
                     <li *ngFor="let category of categories">
-                        <a>{{category.name}}</a>
+                        <a routerLink="/catalog" 
+                        [queryParams]="{types: category?.typesUrl}">{{category.name}}</a>
                     </li>
                 </ul>
             </nav>

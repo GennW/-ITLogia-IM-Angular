@@ -112,4 +112,52 @@ ng g c shared/components/category-filter --skip-tests
 25:06 как сделать чтобы не закрывать окно при удвоении параметра диаметр
 
 
+54:16 сортировка
 
+1:01:35 paginations
+1:06:45 обработка кнопок пагинации
+
+1:10:50 отправка на сервер результатов сортиовки
+1:21:10 задержка при запросах debounceTime(500)
+
+
+Модуль №13. УРОК №6
+31:25 рекомендуемые товары
+47:00 компонент добавления в корзину
+ng g c shared/components/count-selector --skip-tests
+52:30 связывание компонента
+
+Модуль №13. УРОК №7
+ng g m views/order --routing
+ng g c views/order/cart --skip-tests
+ng g c views/order/order --skip-tests
+писываем роуты в локальном и основном ленивую загрузку
+в OrderModule импортируем SharedModule 
+html верстка
+27:50 облегченная версия bestProducts
+
+33:00 авторизация и корзина
+40:20 запрос на полу корзины
+ng g s shared/services/cart --skip-tests
+работа с куками 1:04 , {withCredentials: true}
+1:23:10 детальная инфо
+1:35 корзина
+1:43 изменение количества в круге корзины в хедере
+
+
+Модуль №13. УРОК №8
+
+ng g m views/personal --routing
+ng g c views/personal/favorite --skip-tests
+ng g c views/personal/info --skip-tests
+ng g c views/personal/orders --skip-tests
+ng g g core/auth/auth --skip-tests
+ng g g core/auth/auth-forward --skip-tests
+
+23:20
+ng g s shared/serices/favorite --skip-tests
+31:10 interseptor авторизация
+вручную auth.interceptor.ts
+
+
+40:50 auth.interceptor

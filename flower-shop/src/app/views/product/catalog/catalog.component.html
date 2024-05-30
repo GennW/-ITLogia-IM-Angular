@@ -4,9 +4,9 @@
 
     <div class="catalog-head">
       <div class="catalog-applied-filters">
-        <div class="catalog-applied-filter">
-          <span>Sukulents</span>
-          <a>
+        <div class="catalog-applied-filter" *ngFor="let appliedFilter of appliedFilters">
+          <span>{{appliedFilter.name}}</span>
+          <a (click)="removeAppliedFilter(appliedFilter)">
             <svg
               width="16"
               height="17"
@@ -36,7 +36,7 @@
           </a>
         </div>
       </div>
-      <div class="catalog-sorting ">
+      <div class="catalog-sorting" [class.open]="sortingOpen" (click)="toggleSorting()">
         <div class="catalog-sorting-head">
           <span>Сортировать</span>
           <svg
@@ -53,10 +53,11 @@
           </svg>
         </div>
         <div class="catalog-sorting-body">
-            <div class="catalog-sorting-item">От А до Я</div>
-            <div class="catalog-sorting-item">От Я до А</div>
-            <div class="catalog-sorting-item active">По возрастанию цены</div>
-            <div class="catalog-sorting-item">По убыванию цены</div>
+            <div class="catalog-sorting-item" 
+            [class.active]="this.activeParams.sort ? this.activeParams.sort === sortingOption.value : false"
+            (click)="sort(sortingOption.value)"
+            *ngFor="let sortingOption of sortingOptions">{{sortingOption.name}}</div>
+            
         </div>
       </div>
     </div>
@@ -70,16 +71,17 @@
         <category-filter type="diameter"></category-filter>
       </div>
       <div class="catalog-products">
-        <product-card
-          *ngFor="let product of products"
-          [product]="product"
-        ></product-card>
+        <div *ngIf="products.length === 0">
+          <p style="font-size: 24px; color: brown;">Товары не найдены</p>
+        </div>
+        <product-card [countInCart]="product.countInCart" *ngFor="let product of products" [product]="product"></product-card>
       </div>
     </div>
 
     <!-- пагинация -->
-    <div class="pagination">
-      <div class="pagination-arrow">
+    <div class="pagination" *ngIf="pages.length > 1">
+      <div class="pagination-arrow" (click)="openPrevPage()"
+      [class.disabled]="activeParams.page ? activeParams.page === 1 : true">
         <svg
           width="24"
           height="25"
@@ -98,12 +100,14 @@
         </svg>
       </div>
       <div class="pagination-pages">
-        <a class="pagination-page active">1</a>
-        <a class="pagination-page">2</a>
-        <a class="pagination-page">3</a>
-        <a class="pagination-page">4</a>
+        <a class="pagination-page" (click)="openPage(page)"
+        [class.active]="this.activeParams.page ? this.activeParams.page === page : (page === 1)"
+        
+        *ngFor="let page of pages">{{page}}</a>
+
       </div>
-      <div class="pagination-arrow">
+      <div class="pagination-arrow" (click)="openNextPage()"
+      [class.disabled]="activeParams.page ? activeParams.page === pages.length : false">
         <svg
           width="24"
           height="25"
@@ -124,3 +128,5 @@
     </div>
   </div>
 </div>
+
+

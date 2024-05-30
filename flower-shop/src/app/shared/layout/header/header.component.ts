@@ -1,11 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CategotyService } from '../../services/categoty.service';
-import { CategoriesType } from 'src/app/types/categories.type';
 import { AuthService } from 'src/app/core/auth.service';
 import { DefaultResponseType } from 'src/app/types/default-response.type copy';
-import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { CategoryWithTypeType } from 'src/app/types/categoryWithType.type ';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -14,16 +13,27 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   islogged: boolean = false;
+  count: number = 0;
 
-  @Input() categories: CategoriesType[] = [];
+  @Input() categories: CategoryWithTypeType[] = [];
 
-  constructor(private authService: AuthService, private _snackBar: MatSnackBar, private router: Router) {
+  constructor(private authService: AuthService, private _snackBar: MatSnackBar, 
+    private router: Router, private cartService: CartService) {
     this.islogged = authService.getIsLoggedIn();
   }
 
   ngOnInit(): void {
     this.authService.isLogged$.subscribe((isLogged: boolean) => {
       this.islogged = isLogged;
+    });
+
+    this.cartService.getCartCount()
+    .subscribe(data => {
+      this.count = data.count;
+    });
+    this.cartService.count$
+    .subscribe(count => {
+      this.count = count;
     })
   }
 

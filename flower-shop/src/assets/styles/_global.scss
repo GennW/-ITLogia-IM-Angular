@@ -49,9 +49,45 @@ input {
     font-size: 16px;
     color: white;
 
+    &.button-transparent {
+        background-color: transparent;
+        border: 1px solid #6CAC72;
+        color: $green-text-color;
+    }
+
+    &.button-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span {
+            margin-left: 16px;
+        }
+    }
+
     &:disabled {
         background: gray;
         cursor: not-allowed;
+    }
+
+    &.button-in-cart span {
+        &:first-child {
+            display: block;
+        }
+        &:last-child {
+            display: none;
+        }
+    }
+
+    &:hover {
+        &.button-in-cart span {
+            &:first-child {
+                display: none;
+            }
+            &:last-child {
+                display: block;
+            }
+        }
     }
 }
 
@@ -69,3 +105,28 @@ a.button {
         color: $grey-text-color;
     }
 }
+
+.corousel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 50px;
+
+    .corousel-title {
+      @include head-lora-32;
+    }
+
+    .corousel-arrows {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      a {
+        cursor: pointer;
+
+        &:first-child {
+          margin-right: 30px;
+        }
+      }
+    }
+  }
