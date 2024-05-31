@@ -1,4 +1,4 @@
-<div class="product-card" *ngIf="product" [routerLink]="isLight ? ['/product/' + product.url] : []" 
+<div class="product-card" *ngIf="product" (click)="navigate()" 
 [class.is-light]="isLight">
     <div class="product-card-favorite" *ngIf="!isLight" (click)="updateFavorite()">
         <span *ngIf="product.isInFavorite">
