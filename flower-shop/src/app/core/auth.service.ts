@@ -69,9 +69,9 @@ export class AuthService {
     this.isLogged$.next(false);
   }
 
-  public getTokens(): { accsessToken: string | null, refreshToken: string | null } {
+  public getTokens(): { accessToken: string | null, refreshToken: string | null } {
     return {
-      accsessToken: localStorage.getItem(this.accessTokenKey),
+      accessToken: localStorage.getItem(this.accessTokenKey),
       refreshToken: localStorage.getItem(this.refreshTokenKey),
     }
   }

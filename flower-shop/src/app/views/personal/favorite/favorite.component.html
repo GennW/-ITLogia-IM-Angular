@@ -1,7 +1,15 @@
 <div class="favorite">
     <div class="container">
         <div class="favorite-title">Избранное</div>
-        <div class="favorite-products">
+
+        <div class="favorite-empty" *ngIf="!products || (products && products.length === 0)">
+            <div>В избранном нет товаров</div>
+            <button class="button" routerLink="/catalog">В каталог</button>
+        </div>
+
+
+
+        <div class="favorite-products" *ngIf="products && products.length > 0">
             <div class="favorite-product" *ngFor="let product of products">
                 <div class="favorite-product-img" style="background-image: url('{{serverStaticPath + product.image}}');"></div>
                 <div class="favorite-product-name">{{product.name}}</div>

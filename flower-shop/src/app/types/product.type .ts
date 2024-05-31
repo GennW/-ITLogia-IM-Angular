@@ -14,6 +14,7 @@ export type ProductType = {
         name: string,
         url: string
     },
-    countInCart?: number
+    countInCart?: number,
+    isInFavorite?: boolean
 
 }

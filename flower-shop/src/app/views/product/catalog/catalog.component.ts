@@ -44,9 +44,8 @@ export class CatalogComponent implements OnInit {
   ngOnInit(): void {
     this.cartService.getCart().subscribe((data: CartType) => {
       this.cart = data;
-    });
 
-    this.categoryService.getCategoriesWithTypes().subscribe((data) => {
+          this.categoryService.getCategoriesWithTypes().subscribe((data) => {
       this.categoriesWithTypes = data;
 
       this.activatedRoute.queryParams
@@ -120,6 +119,9 @@ export class CatalogComponent implements OnInit {
             });
         });
     });
+    });
+
+
   }
 
   removeAppliedFilter(appliedFilter: AppliedFilterType) {

@@ -161,3 +161,10 @@ ng g s shared/serices/favorite --skip-tests
 
 
 40:50 auth.interceptor
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, (43:43 video)
+
+
+50:45 добавление в избранное  detail
+1:01:45 добавление в избранное catalog
+1:03:30 при обновлении страницы
+1:08 остановился
