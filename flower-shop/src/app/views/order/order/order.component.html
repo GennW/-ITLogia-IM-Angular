@@ -1,0 +1,136 @@
+<div class="order">
+    <div class="container">
+        <div class="order-title">
+            Оформление вашего заказа
+        </div>
+        <div class="order-info">
+            <div class="order-form" [formGroup]="orderForms">
+
+                <div class="order-form-block">
+                    <div class="order-form-label">
+                        Выберите способ доставки
+                    </div>
+                    <div class="order-form-types">
+                        <div class="order-form-type-item" (click)="changeDeliveryType(deliveryTypes.delivery)"
+                            [class.active]="deliveryType === deliveryTypes.delivery">Курьером</div>
+                        <div class="order-form-type-item" (click)="changeDeliveryType(deliveryTypes.self)"
+                            [class.active]="deliveryType === deliveryTypes.self">Самовывоз</div>
+                    </div>
+                </div>
+                <div class="order-form-block">
+                    <div class="order-form-label">
+                        Заполните личные данные
+                    </div>
+                    <div class="order-form-inputs personal-data-inputs">
+                        <input type="text" class="input" placeholder="Фамилия" [ngStyle]="{'border-color': orderForms.get('lastName')?.invalid
+                        && ( orderForms.get('lastName')?.touched ||  orderForms.get('lastName')?.dirty) ? 'red' : ''}"
+                            formControlName="lastName">
+                        <input type="text" class="input" placeholder="Имя"
+                            [ngStyle]="{'border-color': orderForms.get('firstName')?.invalid
+                        && ( orderForms.get('firstName')?.touched ||  orderForms.get('firstName')?.dirty) ? 'red' : ''}" formControlName="firstName">
+                        <input type="text" class="input" placeholder="Отчество" formControlName="fatherName">
+                        <input type="text" class="input" placeholder="Телефон" [ngStyle]="{'border-color': orderForms.get('phone')?.invalid
+                        && ( orderForms.get('phone')?.touched ||  orderForms.get('phone')?.dirty) ? 'red' : ''}"
+                            formControlName="phone">
+                        <input type="text" class="input" placeholder="E-mail" [ngStyle]="{'border-color': orderForms.get('email')?.invalid
+                        && ( orderForms.get('email')?.touched ||  orderForms.get('email')?.dirty) ? 'red' : ''}"
+                            formControlName="email">
+                    </div>
+                </div>
+                <div class="order-form-block" *ngIf="deliveryType !== deliveryTypes.self">
+                    <div class="order-form-label">
+                        Заполните адрес доставки
+                    </div>
+                    <div class="order-form-inputs address-inputs">
+                        <input type="text" class="input street" placeholder="Улица" [ngStyle]="{'border-color': orderForms.get('street')?.invalid
+                        && ( orderForms.get('street')?.touched ||  orderForms.get('street')?.dirty) ? 'red' : ''}"
+                            formControlName="street">
+                        <input type="text" class="input house" placeholder="№ дома" [ngStyle]="{'border-color': orderForms.get('house')?.invalid
+                        && ( orderForms.get('house')?.touched ||  orderForms.get('house')?.dirty) ? 'red' : ''}"
+                            formControlName="house">
+                        <input type="text" class="input entrance" placeholder="Подъезд" [ngStyle]="{'border-color': orderForms.get('entrance')?.invalid
+                        && ( orderForms.get('entrance')?.touched ||  orderForms.get('entrance')?.dirty) ? 'red' : ''}"
+                            formControlName="entrance">
+                        <input type="text" class="input apartment" placeholder="№ квартиры"
+                            [ngStyle]="{'border-color': orderForms.get('apartment')?.invalid
+                        && ( orderForms.get('apartment')?.touched ||  orderForms.get('apartment')?.dirty) ? 'red' : ''}" formControlName="apartment">
+                    </div>
+                </div>
+                <div class="order-form-block">
+                    <div class="order-form-label">
+                        Выберите способ оплаты
+                    </div>
+                    <div class="order-form-radio">
+                        <div class="order-form-radio-block">
+                            <input type="radio" name="" id="card" formControlName="paymentType"
+                                value="{{paymentTypes.cardOnline}}">
+                            <label for="card">Оплата банковской картой в интернет-магазине</label>
+                        </div>
+                        <div class="order-form-radio-block">
+                            <input type="radio" name="" id="cashless" formControlName="paymentType"
+                                value="{{paymentTypes.cardToCourier}}">
+                            <label for="cashless">Безналичный расчет при получении</label>
+                        </div>
+                        <div class="order-form-radio-block">
+                            <input type="radio" name="" id="cash" formControlName="paymentType"
+                                value="{{paymentTypes.cashToCourier}}">
+                            <label for="cash">Наличный расчет при получении</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-form-block">
+                    <div class="order-form-label">
+                        Комментарий к заказу (необязательно)
+                    </div>
+                    <div class="order-form-inputs">
+                        <textarea cols="30" rows="5" class="input" formControlName="comment"
+                            placeholder="Оставьте свой комментарий..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="order-details">
+                <div class="order-details-info">
+                    <div class="order-details-info-title">Ваш заказ</div>
+                    <div class="order-details-info-item">
+                        <div class="order-details-info-item-text">Товаров:</div>
+                        <div class="order-details-info-item-data">{{totalCount}}</div>
+                    </div>
+                    <div class="order-details-info-item">
+                        <div class="order-details-info-item-text">Общая стоимость:</div>
+                        <div class="order-details-info-item-data">{{totalAmount}} RUB</div>
+                    </div>
+                    <div class="order-details-info-item">
+                        <div class="order-details-info-item-text">Стоимость доставки:</div>
+                        <div class="order-details-info-item-data">10 RUB</div>
+                    </div>
+                    <div class="order-details-info-item">
+                        <div class="order-details-info-item-text">Итоговая стоимость:</div>
+                        <div class="order-details-info-item-data">{{totalAmount + 10}} RUB</div>
+                    </div>
+                </div>
+                <button (click)="createOrder()" class="button">Подтвердить заказ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #popup>
+    <div class="order-popup">
+        <div class="order-popup-close" (click)="closePopup()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="1.93562" y1="2.6499" x2="13.9564" y2="14.6707" stroke="#A8ABA7" stroke-linecap="round" />
+                <line x1="13.9238" y1="2.62971" x2="1.90301" y2="14.6505" stroke="#A8ABA7" stroke-linecap="round" />
+            </svg>
+        </div>
+        <div class="order-popup-title">
+            Благодарим за заказ!
+        </div>
+        <div class="order-popup-content">
+            <div>Ваш заказ оформлен.</div>
+            <div>Вся информация о заказе была выслана вам на почту.</div>
+            <div>Курьер свяжется с вами за два часа до доставки товара.</div>
+        </div>
+
+    </div>
+
+</ng-template>

@@ -49,7 +49,7 @@ export class CartComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private cartService: CartService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.productService.getBestProducts().subscribe((data: ProductType[]) => {
@@ -57,14 +57,15 @@ export class CartComponent implements OnInit {
     });
 
     this.cartService.getCart()
-    .subscribe((data: CartType | DefaultResponseType) => {
-      if ((data as DefaultResponseType).error !== undefined) {
-        throw new Error((data as DefaultResponseType).message);
-      }
+      .subscribe((data: CartType | DefaultResponseType) => {
+        if ((data as DefaultResponseType).error !== undefined) {
+          throw new Error((data as DefaultResponseType).message);
+        }
 
-      this.cart = data as CartType;
-      this.calculateTotal();
-    });
+        this.cart = data as CartType;
+
+        this.calculateTotal();
+      });
   }
   calculateTotal() {
     this.totalAmount = 0;
@@ -79,7 +80,6 @@ export class CartComponent implements OnInit {
   }
 
   updateCount(id: string, count: number) {
-    // this.count = value;
 
     if (this.cart) {
       this.cartService

@@ -171,3 +171,8 @@ ng g s shared/serices/favorite --skip-tests
 
 
 Модуль №13. УРОК №9
+
+сервис для создания заказа
+дублируем cart.service
+
+1:30:00
