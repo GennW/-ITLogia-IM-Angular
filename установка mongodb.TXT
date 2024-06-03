@@ -190,5 +190,6 @@ ng g s shared/serices/favorite --skip-tests
 Модуль №13. УРОК №11
 orders.component
 
- stop 28:35
+ 28:35 утилита статуса заказа (цвет и название на русском)
+ на основе active-params.util order-status
 
