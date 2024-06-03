@@ -9,10 +9,16 @@ import { DefaultResponseType } from 'src/app/types/default-response.type copy';
   providedIn: 'root',
 })
 export class CartService {
-  count: number = 0;
+  private count: number = 0; //1:35:50
   count$: Subject<number> = new Subject<number>();
 
   constructor(private http: HttpClient) {}
+
+  setCount(count: number) {
+    this.count = count;
+    // овещение всех слушателей
+    this.count$.next(this.count)
+  }
 
   getCart(): Observable<CartType | DefaultResponseType> {
     return this.http.get<CartType | DefaultResponseType>(
@@ -33,10 +39,10 @@ export class CartService {
       )
       .pipe(
         tap((data) => {
-          //1:21:40
+          //1:21:40 (1:36:50)
           if (!data.hasOwnProperty('error')) {
-            this.count = (data as { count: number }).count;
-            this.count$.next(this.count);
+            
+            this.setCount((data as { count: number }).count)
           }
         })
       );
@@ -57,11 +63,12 @@ export class CartService {
         tap((data) => {
           // 1:22:10 Модуль №13. УРОК №8
           if (!data.hasOwnProperty('error')) {
-            this.count = 0;
+            let count = 0;
             (data as CartType).items.forEach((item) => {
-              this.count += item.quantity;
+              count += item.quantity;
             });
-            this.count$.next(this.count);
+
+            this.setCount(count);
           }
         })
       );

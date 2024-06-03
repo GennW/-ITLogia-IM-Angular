@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { OrderService } from 'src/app/shared/services/order.service';
+import { DefaultResponseType } from 'src/app/types/default-response.type copy';
+import { OrderType } from 'src/app/types/order.type';
 
 @Component({
   selector: 'app-orders',
@@ -6,10 +9,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
+  orders: OrderType[] = [];
 
-  constructor() { }
+  constructor(private orderService: OrderService) { }
 
   ngOnInit(): void {
+
+    this.orderService.getOrders()
+    .subscribe((data: OrderType[] | DefaultResponseType) => {
+      if ((data as DefaultResponseType).error !== undefined) {
+        throw new Error((data as DefaultResponseType).message);
+      }
+
+      this.orders = data as OrderType[];
+
+    });
   }
 
 }

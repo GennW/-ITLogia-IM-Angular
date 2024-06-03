@@ -161,32 +161,3 @@ ng g s shared/serices/favorite --skip-tests
 
 
 40:50 auth.interceptor
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, (43:43 video)
-
-
-50:45 добавление в избранное  detail
-1:01:45 добавление в избранное catalog
-1:03:30 при обновлении страницы
-1:20:20 запросы при работе в корзиной
-
-
-Модуль №13. УРОК №9
-
-сервис для создания заказа
-дублируем cart.service
-
-
-
-
-Модуль №13. УРОК №10
-31:40 дублируем oreder.service info.component
-создаем отдельый тип userInfoType
-43:50 отображение сохраненных данных в личном кабинете
-50:30 отображение сохраненных данных при оформлении заказа
-
-
-Модуль №13. УРОК №11
-orders.component
-
- stop 28:35
-

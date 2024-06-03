@@ -1,7 +1,8 @@
 import { DeliveryType } from "./delivery.type";
+import { OrderStatusType } from "./order-staus.type";
 import { PaymentType } from "./payment.type";
 
-
+//1:21:30 Модуль №13. УРОК №9
 export type OrderType = {
   deliveryType: DeliveryType,
   firstName: string,
@@ -11,9 +12,9 @@ export type OrderType = {
   paymentType: PaymentType,
   email: string,
   street?: string,
-  house?: number,
-  entrance?: number,
-  apartment?: number,
+  house?: string,
+  entrance?: string,
+  apartment?: string,
   comment?: string,
   items?:
     {
@@ -23,4 +24,6 @@ export type OrderType = {
         price: number,
         total: number
     }[],
+    totalAmount?: number,
+    status?: OrderStatusType
 };

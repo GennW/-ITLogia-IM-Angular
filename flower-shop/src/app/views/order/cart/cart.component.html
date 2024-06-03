@@ -6,7 +6,6 @@
         <div class="cart-empty" *ngIf="!cart || cart.items.length === 0">
           <div>В корзине нет товаров</div>
           <button class="button" routerLink="/catalog">В каталог</button>
-
       </div>
         <div class="cart-info" *ngIf="cart && cart.items.length > 0">
             <div class="cart-products">

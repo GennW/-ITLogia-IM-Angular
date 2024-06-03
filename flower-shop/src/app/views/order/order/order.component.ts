@@ -1,22 +1,31 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/auth.service';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { OrderService } from 'src/app/shared/services/order.service';
+import { UserService } from 'src/app/shared/services/user.service';
 import { CartType } from 'src/app/types/cart.type  copy';
 import { DefaultResponseType } from 'src/app/types/default-response.type copy';
 import { DeliveryType } from 'src/app/types/delivery.type';
 import { OrderType } from 'src/app/types/order.type';
 import { PaymentType } from 'src/app/types/payment.type';
+import { UserInfoType } from 'src/app/types/user-info.type';
 import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
-  styleUrls: ['./order.component.scss']
+  styleUrls: ['./order.component.scss'],
 })
 export class OrderComponent implements OnInit {
   cart: CartType | null = null;
@@ -44,15 +53,24 @@ export class OrderComponent implements OnInit {
   @ViewChild('popup') popup!: TemplateRef<ElementRef>;
   dialogRef: MatDialogRef<any> | null = null;
 
-  constructor(private cartService: CartService, private router: Router,
-    private _snackBar: MatSnackBar, private fb: FormBuilder,
-    private dialog: MatDialog, private orderSevice: OrderService
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+    private _snackBar: MatSnackBar,
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    private orderSevice: OrderService,
+    private userService: UserService,
+    private authService: AuthService
   ) {
     this.updateDeliveryTypeValidations();
   }
 
   ngOnInit(): void {
-    this.cartService.getCart()
+
+    // получение данных корзины
+    this.cartService
+      .getCart()
       .subscribe((data: CartType | DefaultResponseType) => {
         if ((data as DefaultResponseType).error !== undefined) {
           throw new Error((data as DefaultResponseType).message);
@@ -66,6 +84,41 @@ export class OrderComponent implements OnInit {
         }
         this.calculateTotal();
       });
+
+      //получение данных о пользователе
+      if (this.authService.getIsLoggedIn()) {
+              this.userService.getUserInfo()
+      .subscribe((data: UserInfoType | DefaultResponseType) => {
+        if ((data as DefaultResponseType).error !== undefined) {
+          throw new Error((data as DefaultResponseType).message);
+        }
+  
+        // отображаем сохраненные данные в форме
+        const userInfo = data as UserInfoType;
+        const paramsToUpdate = {
+          firstName: userInfo.firstName ? userInfo.firstName : '',
+          lastName: userInfo.lastName ? userInfo.lastName : '',
+          phone: userInfo.phone ? userInfo.phone : '',
+          fatherName: userInfo.fatherName ? userInfo.fatherName : '',
+          paymentType: userInfo.paymentType ? userInfo.paymentType : PaymentType.cashToCourier,
+          email: userInfo.email ? userInfo.email : '',
+          street: userInfo.street ? userInfo.street : '',
+          house: userInfo.house ? userInfo.house : '',
+          entrance: userInfo.entrance ? userInfo.entrance : '',
+          apartment: userInfo.apartment ? userInfo.apartment : '',
+          comment: ''
+        }
+  
+        this.orderForms.setValue(paramsToUpdate);
+  
+        if(userInfo.deliveryType) {
+          this.deliveryType = userInfo.deliveryType;
+        }
+  
+      });
+      }
+
+
   }
 
   calculateTotal() {
@@ -73,7 +126,7 @@ export class OrderComponent implements OnInit {
     this.totalCount = 0;
 
     if (this.cart) {
-      this.cart.items.forEach(item => {
+      this.cart.items.forEach((item) => {
         this.totalAmount += item.quantity * item.product.price;
         this.totalCount += item.quantity;
       });
@@ -105,35 +158,66 @@ export class OrderComponent implements OnInit {
     this.orderForms.get('house')?.updateValueAndValidity();
   }
 
-  createOrder() { // 1:25 Модуль №13. УРОК №9
-    if (this.orderForms.valid) {
-      this.orderSevice.createOrder({
+  createOrder() {
+    // 1:25 Модуль №13. УРОК №9 (1:30)
+    if (this.orderForms.valid && this.orderForms.value.firstName && this.orderForms.value.lastName
+      && this.orderForms.value.phone && this.orderForms.value.paymentType && this.orderForms.value.email
+    ) {
+      const paramsObject: OrderType = {
         deliveryType: this.deliveryType,
-        ...this.orderForms.value
-      } as OrderType)
-        .subscribe({
-          next: (data: OrderType | DefaultResponseType) => {
-            if ((data as DefaultResponseType).error !== undefined) {
-              throw new Error((data as DefaultResponseType).message);
-            }
+        firstName: this.orderForms.value.firstName,
+        lastName: this.orderForms.value.lastName,
+        phone: this.orderForms.value.phone,
+        paymentType: this.orderForms.value.paymentType,
+        email: this.orderForms.value.email,
+      };
+//1:32:50
+      if (this.deliveryType === DeliveryType.delivery) {
+        if (this.orderForms.value.street) {
+          paramsObject.street = this.orderForms.value.street;
+        }
+        if (this.orderForms.value.apartment) {
+          paramsObject.apartment = this.orderForms.value.apartment;
+        }
+        if (this.orderForms.value.house) {
+          paramsObject.house = this.orderForms.value.house;
+        }
+        if (this.orderForms.value.entrance) {
+          paramsObject.entrance = this.orderForms.value.entrance;
+        }
+      }
 
-            this.dialogRef = this.dialog.open(this.popup);
-            // если клик не по крестику закрыть
-            this.dialogRef.backdropClick()
-              .subscribe(() => {
-                this.router.navigate(['/']);
-              });
-          },
-          error: (errorResponse: HttpErrorResponse) => {
-            if (errorResponse.error && errorResponse.error.message) {
-              this._snackBar.open(errorResponse.error.message);
-            } else {
-              this._snackBar.open(' ошибка заказа ');
-            }
-          },
-        });
+      if (this.orderForms.value.comment) {
+        paramsObject.comment = this.orderForms.value.comment;
+      }
+
+      this.orderSevice.createOrder(paramsObject).subscribe({
+        next: (data: OrderType | DefaultResponseType) => {
+          if ((data as DefaultResponseType).error !== undefined) {
+            throw new Error((data as DefaultResponseType).message);
+          }
+
+          this.dialogRef = this.dialog.open(this.popup);
+          // если клик не по крестику закрыть
+          this.dialogRef.backdropClick().subscribe(() => {
+            this.router.navigate(['/']);
+          });
+
+          // оповестить хедер что значение поменялось
+          this.cartService.setCount(0);
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          if (errorResponse.error && errorResponse.error.message) {
+            this._snackBar.open(errorResponse.error.message);
+          } else {
+            this._snackBar.open(' ошибка заказа ');
+          }
+        },
+      });
     } else {
-      console.log('Заполните все поля')
+      this.orderForms.markAllAsTouched();
+      this._snackBar.open('Заполните необходимые поля');
+      
     }
   }
 
