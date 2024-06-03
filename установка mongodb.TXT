@@ -2,6 +2,8 @@
 Убедитесь, что MongoDB успешно запустился
 sudo systemctl status mongod
 
+cd 'C:\Users\HP notebook\Dropbox\ITLogia\projects\Модуль 13.  Интернет-магазин на Angular\-ITLogia-IM-Angular'
+
 
 
 sudo apt --fix-broken install
