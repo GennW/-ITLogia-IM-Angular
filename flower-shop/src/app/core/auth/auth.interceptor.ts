@@ -1,17 +1,22 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, catchError, switchMap, throwError } from "rxjs";
+import { Observable, catchError, finalize, switchMap, throwError } from "rxjs";
 import { AuthService } from "../auth.service";
 import { Router } from "@angular/router";
 import { LoginResponseType } from "src/app/types/login-response.type";
 import { DefaultResponseType } from "src/app/types/default-response.type copy";
+import { LoaderService } from "src/app/shared/services/loader.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private authService: AuthService, private router: Router, private loaderService: LoaderService) {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+        // лоадер
+        this.loaderService.showLoader();
+
         const tokens = this.authService.getTokens();
         if (tokens && tokens.accessToken) {
             const authReq = req.clone({
@@ -25,11 +30,16 @@ export class AuthInterceptor implements HttpInterceptor {
                         return this.handle401Error(authReq, next);
                     }
                     return throwError(() => error);
-                })
+                }),
+                // скрываем лоадер
+                finalize(() => this.loaderService.hideLoader())
             );
         }
 
-        return next.handle(req);
+        return next.handle(req)
+        .pipe(
+            finalize(() => this.loaderService.hideLoader())
+        );
     }
 
     private handle401Error(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

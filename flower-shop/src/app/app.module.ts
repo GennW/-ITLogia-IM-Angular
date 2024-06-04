@@ -15,6 +15,7 @@ import { SharedModule } from './shared/shared.module';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -30,9 +31,11 @@ import { MatDialogModule } from '@angular/material/dialog';
     BrowserAnimationsModule,
     MatSnackBarModule,
     MatMenuModule,
+    ReactiveFormsModule,
     SharedModule,
     CarouselModule,
     MatDialogModule,
+    FormsModule,
 
     AppRoutingModule,
 

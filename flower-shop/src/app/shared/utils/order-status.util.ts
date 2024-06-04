@@ -16,11 +16,9 @@ export class OrderStatusUtil {
       case OrderStatusType.pending:
         name = 'Обработка';
         break;
-      case OrderStatusType.pending:
+      case OrderStatusType.success:
         name = 'Выполнен';
         color = '#B6D5B9';
-        break;
-      default:
         break;
     }
 

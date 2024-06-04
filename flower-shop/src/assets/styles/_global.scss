@@ -189,3 +189,8 @@ a.button {
     -webkit-transform: scale(1);
     transform: scale(1);
 }
+
+
+.mat-progress-spinner circle, .mat-spinner circle {
+    stroke: #6CAC72;
+}

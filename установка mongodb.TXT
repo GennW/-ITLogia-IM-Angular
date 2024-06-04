@@ -193,3 +193,19 @@ orders.component
  28:35 утилита статуса заказа (цвет и название на русском)
  на основе active-params.util order-status
 
+
+
+Модуль №13. УРОК №12
+ импорт FormsModule в app.module
+ для поиска [ngModel]="searchValue" (ngModelChange)="changeSearchValue($event)">
+
+ 22 мин закрытие окна поиска при клике на оверлей первый вариант
+ 28:30 второй вариант
+ 33 мин задержка перед отправкой ввденных в поиск символов
+ 
+ 39 мин лоадер 
+ ng g c shared/components/loader --skip-tests
+43:30 сервис для лоадера ng g s shared/services/loader --skip-tests
+49: 00 делаем глобальным лоадер
+52:40 ссылки
+54:55 при переходе по ссылке перекидывало вверх

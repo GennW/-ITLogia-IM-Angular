@@ -21,6 +21,11 @@ export class ProductService {
       params: params
     })
   }
+//  6:30 Модуль №13. УРОК №12
+  searchProducts(query: string): Observable<ProductType[]> {
+    return this.http.get<ProductType[]>(environment.api + 'products/search?query=' + query);
+  }
+
 
   getProduct(url: string): Observable<ProductType> {
     return this.http.get<ProductType>(environment.api + 'products/' + url);
