@@ -15,7 +15,8 @@
                 <div class="favorite-product-name">{{product.name}}</div>
                 <div class="favorite-product-price">{{product.price}} RUB</div>
                 <div class="favorite-product-action">
-                    <button class="button" routerLink="/product/{{product.url}}">Открыть</button>
+                    <button class="button" (click)="addToCart()">В корзину</button>
+                    <count-selector [count]="count" (onCountChange)="updateCount($event)"></count-selector>
                 </div>
                 <div class="favorite-product-remove" (click)="removeFromFavorite(product.id)">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

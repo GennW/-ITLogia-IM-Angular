@@ -12,7 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     CartComponent,
-    OrderComponent
+    OrderComponent,
   ],
   imports: [
     CommonModule,
