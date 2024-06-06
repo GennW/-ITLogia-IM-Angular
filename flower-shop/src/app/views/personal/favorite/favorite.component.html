@@ -15,8 +15,13 @@
                 <div class="favorite-product-name">{{product.name}}</div>
                 <div class="favorite-product-price">{{product.price}} RUB</div>
                 <div class="favorite-product-action">
-                    <button class="button" (click)="addToCart()">В корзину</button>
-                    <count-selector [count]="count" (onCountChange)="updateCount($event)"></count-selector>
+                    <button class="button" *ngIf="!product.inCart" (click)="addToCart(product)">В корзину</button>
+                    <button class="button button-transparent button-in-cart" *ngIf="product.inCart" 
+                    (click)="removeFromCart(product)">
+                        <span>В корзине</span>
+                        <span>Удалить</span>
+                    </button>
+                    <count-selector [count]="product.count" (onCountChange)="updateCount($event, product)"></count-selector>
                 </div>
                 <div class="favorite-product-remove" (click)="removeFromFavorite(product.id)">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

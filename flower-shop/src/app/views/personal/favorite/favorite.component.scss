@@ -68,16 +68,33 @@
 
         .favorite-product-action {
           width: 160px;
-        }
+          display: grid;
+          gap: 10px;
+          justify-items: center;
 
-        .favorite-product-remove {
-          margin-left: 61px;
-          cursor: pointer;
+          .button {
+            &.button-transparent {
+              width: 120px;
+          
+              &:hover {
+                width: 120px; 
+              }
+            }
+          
+            &.button-in-cart {
+              &:hover {
+                width: 120px; 
+              }
+            }
+          }
+          
         }
       }
     }
-  }
-}
 
-.button {
+    .favorite-product-remove {
+      margin-left: 61px;
+      cursor: pointer;
+    }
+  }
 }
