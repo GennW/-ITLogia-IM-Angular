@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./count-selector.component.scss']
 })
 export class CountSelectorComponent implements OnInit {
-  @Input() count: number | undefined = 1;
+  @Input() count: number = 1;
 
   @Output() onCountChange: EventEmitter<number> = new EventEmitter<number>;
 
@@ -16,20 +16,15 @@ export class CountSelectorComponent implements OnInit {
   }
 
   countChange() {
-    if (this.count !== undefined) {
-      this.onCountChange.emit(this.count);
-    }
+    this.onCountChange.emit(this.count);
   }
 
   increaseCount() {
-    if (this.count !== undefined) {
-      this.count++;
-      this.countChange();
-    }
+    this.count++;
+    this.countChange();
   }
-
   decreaseCount() {
-    if (this.count !== undefined && this.count > 1) {
+    if (this.count > 1) {
       this.count--;
       this.countChange();
     }

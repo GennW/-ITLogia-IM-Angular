@@ -36,6 +36,7 @@ export class FavoriteComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+  
     
     // сначала запрашиваем корзину затем категории с типами , продукты и т.д. так как корзину может запросить не зарегистрированный пользователь
     this.cartService.getCart().subscribe((data: CartType | DefaultResponseType) => {
@@ -43,6 +44,7 @@ export class FavoriteComponent implements OnInit {
         throw new Error((data as DefaultResponseType).message);
       }
       this.cart = data as CartType;
+      
 
       // затем полчаем товары в избранном
       // если пользователь аторизован
@@ -59,6 +61,13 @@ export class FavoriteComponent implements OnInit {
             //если ошибок нет то товары в избранном сохраняем в переменную
             this.favoriteProducts = data as FavoriteType[];
             // this.processCatalog();
+
+            // Инициализируем count для каждого продукта
+            this.products = (data as FavoriteType[]).map(product => ({
+              ...product,
+              count: 1 // значение по умолчанию для count
+            }));
+  
           },
           error: (error) => {
             // если не получили например если нет авторизации или не получили избранное
@@ -138,6 +147,7 @@ export class FavoriteComponent implements OnInit {
           this.countInCart = 0; // Сбрасываем текущий продукт из корзины
         }
         this.count = 1;
+        product.count = 1;
       });
   }
 }
