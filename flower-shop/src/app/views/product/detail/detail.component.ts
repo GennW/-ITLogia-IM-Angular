@@ -19,6 +19,7 @@ import { environment } from 'src/environments/environment';
 })
 export class DetailComponent implements OnInit {
   count: number = 1;
+  islogged: boolean = false;
   product!: ProductType; // <div class="detail" *ngIf="product">
   recomendProducts: ProductType[] = [];
   error: string = '';
@@ -57,9 +58,15 @@ export class DetailComponent implements OnInit {
     private favoriteService: FavoriteService,
     private authService: AuthService,
     private _snackBar: MatSnackBar
-  ) {}
+  ) {
+    this.islogged = authService.getIsLoggedIn();
+  }
 
   ngOnInit(): void {
+    this.authService.isLogged$.subscribe((isLogged: boolean) => {
+      this.islogged = isLogged;
+    });
+    
     this.activatedRout.params.subscribe((params) => {
       this.productService.getProduct(params['url']).subscribe({
         next: (data: ProductType) => {
@@ -113,6 +120,7 @@ export class DetailComponent implements OnInit {
     this.productService.getBestProducts().subscribe((data: ProductType[]) => {
       this.recomendProducts = data;
     });
+    
   }
 
   updateCount(value: number) {

@@ -27,7 +27,7 @@ export class SignupComponent implements OnInit {
 
   }
   signUp() {
-      if (this.signupForm.value && this.signupForm.value.email && this.signupForm.value.password 
+      if (this.signupForm.valid && this.signupForm.value.email && this.signupForm.value.password 
         && this.signupForm.value.passwordRepeat && this.signupForm.value.agree) {
         this.authService.signup(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.passwordRepeat)
         .subscribe({

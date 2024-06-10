@@ -63,10 +63,15 @@ export class FavoriteComponent implements OnInit {
             // this.processCatalog();
 
             // Инициализируем count для каждого продукта
-            this.products = (data as FavoriteType[]).map(product => ({
-              ...product,
-              count: 1 // значение по умолчанию для count
-            }));
+            this.products.forEach(product => {
+              product.count = 1;
+              // получаем количество добавленных в корзину из любимых
+              const productInCart = this.cart?.items.find(item => product.id === item.product.id);
+              if (productInCart) {
+                product.inCart = true;
+                product.count = productInCart.quantity;
+              }
+            })
   
           },
           error: (error) => {
